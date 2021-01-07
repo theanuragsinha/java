@@ -1,0 +1,86 @@
+book.html
+
+<form action="book.jsp" method="post">
+		enter the Book_no:
+		<input type="text" name="bookno" value=""><br>
+		enter the title:
+		<input type="text" name="title" value=""><br>
+		enter the author:
+		<input type="text" name="author" value=""><br>
+		enter the publication:
+		<input type="text" name="pub" value=""><br>
+		enter the price:
+		<input type="text" name="price" value=""><br>
+		<input type="submit" name="submit">
+	</form>
+	<a href="reterive.html">click here for reteriving</a>
+
+  ..................................
+  book.jsp
+  
+  <%@ page import="java.sql.*" %>
+<%
+	try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Book","root","");
+		response.setContentType("text/html");
+		int bk = Integer.parseInt(request.getParameter("bookno"));
+		String title = request.getParameter("title");
+		String author = request.getParameter("author");
+		String pub = request.getParameter("pub");
+		int price = Integer.parseInt(request.getParameter("price"));
+		PreparedStatement pst = con.prepareStatement("insert into bookstore values(?,?,?,?,?)");
+		pst.setInt(1, bk);
+		pst.setString(2, title);
+		pst.setString(3, author);
+		pst.setString(4, pub);
+		pst.setInt(5, price);
+		pst.execute();
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from bookstore");
+		while(rs.next())
+		{
+			out.println(" "+rs.getInt(1)+" "+rs.getString(2)+"  "+rs.getString(3)+"  "+rs.getString(4)+"  "+rs.getInt(5));
+		}
+		con.close();	
+	}
+	catch(Exception e){
+		e.printStackTrace();
+	}
+	
+	
+%>
+................
+reterive.html
+
+<form action="reterive.jsp" method="post">
+		enter the book title you want to search:
+		<input type="text" name="tit" value=""><br>
+		<input type="submit" name="submit">
+	</form>
+
+  ....................
+  reterive.jsp
+  
+  <%@ page import="java.sql.*" %>
+<%
+	try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Book","root","");
+		response.setContentType("text/html");
+		String tit = request.getParameter("tit");
+		Statement st = con.createStatement();
+		String q1 = "select * from bookstore where title='"+tit+"'";
+		ResultSet rs = st.executeQuery(q1);
+		while(rs.next())
+		{
+			out.println(" "+rs.getInt(1)+" "+rs.getString(2)+"  "+rs.getString(3)+"  "+rs.getString(4)+"  "+rs.getInt(5));
+		}
+		con.close();
+	}
+	catch(Exception e)
+{
+		e.printStackTrace();
+}
+	
+%>
