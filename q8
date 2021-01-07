@@ -1,0 +1,35 @@
+<h1>Welcome to the Grade.com</h1>
+<form action="grades.jsp" method="post">
+enter subject 1 marks
+<input type="number" name="grade1" value="" ><br>
+enter subject 2 marks
+<input type="number" name="grade2" value="" ><br>
+enter subject 3 marks
+<input type="number" name="grade3" value="" ><br>
+enter subject 4 marks
+<input type="number" name="grade4" value="" ><br>
+enter subject 5 marks
+<input type="number" name="grade5" value="" ><br>
+<input type="submit" name="submit">
+</form>
+........................
+<%
+int g1= Integer.parseInt(request.getParameter("grade1"));
+int g2= Integer.parseInt(request.getParameter("grade2"));
+int g3= Integer.parseInt(request.getParameter("grade3"));
+int g4= Integer.parseInt(request.getParameter("grade4"));
+int g5= Integer.parseInt(request.getParameter("grade5"));
+float avg = ((g1+g2+g3+g4+g5)/(5));
+if (avg >90)
+out.println("S");
+else if (avg<89 && avg>80)
+out.println("A");
+else if (avg<79 && avg>70)
+out.println("B");
+else if (avg<69 && avg>60)
+out.println("C");
+else if (avg<59 && avg>50)
+out.println("D");
+else if (avg<50)
+out.println("F");
+%>
