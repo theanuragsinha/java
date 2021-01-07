@@ -1,0 +1,25 @@
+<form action="eco.jsp" method="post">
+		enter your name:
+		<input type="text" name="name" value=""><br>
+		enter your age:
+		<input type="text" name="age" value=""><br>
+		<input type="submit" name="submit">
+	</form>
+
+
+.........................................
+
+<%
+		String name = request.getParameter("name");
+		int age = Integer.parseInt(request.getParameter("age"));
+		
+		out.println("Your name is "+name);
+		out.println("Your age is "+age);
+		
+		if (age>62)
+			out.println("price of movie ticket for you is 50");
+		else if(age<10)
+			out.println("price of movie ticket for you is 30");
+		else
+			out.println("price of movie ticket for you is 80");
+	%>
