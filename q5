@@ -1,0 +1,77 @@
+q5
+<form action="Subject" method="get">
+	<input type="submit" name="start">
+	</form>
+..........................
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.sun.jdi.connect.spi.Connection;
+
+/**
+ * Servlet implementation class Subject
+ */
+@WebServlet("/Subject")
+public class Subject extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Subject() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out = response.getWriter();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Subject","root", "");
+			response.setContentType("text/html");
+			Statement st = con.createStatement();
+			String q1 = "select * from subject";
+			ResultSet rs = st.executeQuery(q1);
+			while(rs.next())
+			{
+				int sid = rs.getInt("sid");
+				int fid = rs.getInt("fid");
+				String subname = rs.getString("subname");
+				out.println(" "+sid+" "+fid+" "+subname);
+				out.println("<hr>");
+			}
+			PreparedStatement pst = con.prepareStatement("update subject set subname='science' where fid=13 and sid=2 ");
+			int c=pst.executeUpdate();
+			out.println("the number of rows updated are "+c);
+			con.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
